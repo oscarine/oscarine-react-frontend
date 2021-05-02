@@ -23,4 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Visual Studio Code
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

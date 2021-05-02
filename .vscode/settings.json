@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "browserslist",
+        "bulma",
+        "compat",
+        "craco",
+        "oscarine",
+        "stylelint",
+        "tailwindcss"
+    ],
+    "editor.tabSize": 2,
+    "css.validate": false,    // Disable css built-in lint
+    "stylelint.enable": true  // Enable sytlelint
+}
