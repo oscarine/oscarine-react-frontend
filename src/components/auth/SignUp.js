@@ -15,7 +15,7 @@ function SignUp() {
           <input className="pl-2 pr-2 h-8 rounded-md shadow-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black focus:border-transparent ..." type="password" />
           <h5 className="text-m font-medium text-black pb-2 pt-2">Confirm Password</h5>
           <input className="pl-2 pr-2 h-8 rounded-md shadow-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black focus:border-transparent ..." type="password" />
-          <button className="p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ..." type="submit">Sign In</button>
+          <button className="font-semibold p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ..." type="submit">Sign Up</button>
         </form>
       </div>
   )
