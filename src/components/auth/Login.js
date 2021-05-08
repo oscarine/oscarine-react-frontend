@@ -6,7 +6,7 @@ function Login() {
   const history = useHistory();
 
   const directToSignUp = () => {
-    history.push('/sign-up');
+    history.push('/signup');
   }
 
   return (
