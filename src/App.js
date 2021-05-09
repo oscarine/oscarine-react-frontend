@@ -6,15 +6,13 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path='/sign-up'>
+        <Route path='/signup'>
           <SignUp/>
         </Route>
-        <Route path='/'>
+        <Route path='/login'>
           <Login/>
         </Route>
-      </Switch>
-      
-      
+      </Switch> 
     </Router>
     
   );
