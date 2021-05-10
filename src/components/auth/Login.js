@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { ChatAltIcon } from '@heroicons/react/solid'
 
 function Login() {
 
@@ -20,6 +21,10 @@ function Login() {
         <button className="font-semibold p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ..." type="submit">Log In</button>
       </form>
       <p className="text-sm text-center mt-3">Don't have an account? <span className="text-blue-500 cursor-pointer" onClick={directToSignUp}><strong>Sign up</strong></span></p>
+      <div>
+        <ChatAltIcon className="h-10 w-10 text-blue-500"/>
+        <p>Check the above icon</p>
+      </div>
     </div>
   )
 }
