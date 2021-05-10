@@ -15,6 +15,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "lint": "standard --verbose | snazzy",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
@@ -41,6 +42,8 @@
   "devDependencies": {
     "autoprefixer": "^9",
     "postcss": "^7",
+    "snazzy": "^9.0.0",
+    "standard": "*",
     "stylelint-config-recommended": "^5.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }
