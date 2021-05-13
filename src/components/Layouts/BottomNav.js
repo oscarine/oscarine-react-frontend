@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 function BottomNav () {
   return (
     <div className='md:hidden h-14 fixed bottom-0 w-full justify-between flex flex-row bg-white shadow-inner'>
-      <Link to='/home'>
+      <Link to='/'>
         <div className='ml-3 group flex flex-col items-center pt-2 '>
           <LightBulbIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400  ' />
           <p className='font-medium text-gray-500 text-sm group-hover:text-yellow-400'>NEAR ME</p>
@@ -14,7 +14,7 @@ function BottomNav () {
       <Link to='/search'>
         <div className='group flex flex-col items-center pt-2 '>
           <SearchIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400  ' />
-          <p className='font-medium text-gray-500 text-sm group-hover:text-yellow-400'>EXPLORE</p>
+          <p className='font-medium text-gray-500 text-sm group-hover:text-yellow-400'>SEARCH</p>
         </div>
       </Link>
       <div className='group flex flex-col items-center pt-2 '>

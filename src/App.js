@@ -16,14 +16,13 @@ function App () {
         <Route path='/login'>
           <Login />
         </Route>
-        <Route path='/home'>
-          <Header />
-          <Home />
+        <Route path='/search'>
+          <Search />
           <BottomNav />
         </Route>
-        <Route path='/search'>
+        <Route path='/'>
           <Header />
-          <Search />
+          <Home />
           <BottomNav />
         </Route>
       </Switch>
