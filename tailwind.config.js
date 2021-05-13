@@ -4,14 +4,14 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-          // Simple auto column grid
-         'auto': 'repeat(auto-fill, minmax(250px, 1fr))',
-        },
+        // Simple auto column grid
+        auto: 'repeat(auto-fill, minmax(250px, 1fr))'
+      },
       screens: {
-        'mob': {'max': '768px'},
+        mob: { max: '768px' }
       // => @media (max-width: 768px) { ... }
       }
-    },
+    }
   },
   variants: {
     extend: {}
