@@ -1,12 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-function Login() {
-
-  const history = useHistory();
+function Login () {
+  const history = useHistory()
 
   const directToSignUp = () => {
-    history.push('/signup');
+    history.push('/signup')
   }
 
   return (
@@ -24,4 +23,4 @@ function Login() {
   )
 }
 
-export default Login;
+export default Login

@@ -1,14 +1,13 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react'
+import { useHistory } from 'react-router-dom'
 
-function SignUp() {
-
-  const history = useHistory();
+function SignUp () {
+  const history = useHistory()
 
   const directToLogIn = () => {
-    history.push('/login');
+    history.push('/login')
   }
-  
+
   return (
     <div className="w-4/5 max-w-sm mt-10 container mx-auto p-5 bg-white rounded-xl shadow-md border border-gray-300 space-x-4 flex flex-col ...">
       <h1 className="text-center text-2xl font-medium text-black p-6">Sign-Up</h1>
@@ -26,4 +25,4 @@ function SignUp() {
   )
 }
 
-export default SignUp;
+export default SignUp

@@ -6,15 +6,15 @@ import Header from './components/Layouts/Header';
 import Home from './components/Home/Home';
 import Search from './components/Home/Search';
 
-function App() {
+function App () {
   return (
     <Router>
       <Switch>
         <Route path='/signup'>
-          <SignUp/>
+          <SignUp />
         </Route>
         <Route path='/login'>
-          <Login/>
+          <Login />
         </Route>
         <Route path='/home'>
           <Header/>
@@ -31,4 +31,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
