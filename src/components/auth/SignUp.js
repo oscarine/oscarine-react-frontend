@@ -10,7 +10,7 @@ function SignUp() {
   }
   
   return (
-    <div className="w-4/5 max-w-sm mt-10 container mx-auto p-5 bg-white rounded-xl shadow-md  space-x-4 flex flex-col ...">
+    <div className="w-4/5 max-w-sm mt-10 container mx-auto p-5 bg-white rounded-xl shadow-md border border-gray-300 space-x-4 flex flex-col ...">
       <h1 className="text-center text-2xl font-medium text-black p-6">Sign-Up</h1>
         <form className="flex flex-col ..."> 
           <h5 className="text-m font-medium text-black pb-2 pt-4">E-mail</h5>
