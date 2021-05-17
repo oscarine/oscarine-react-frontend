@@ -10,7 +10,7 @@ function ShopSearch () {
           <Link to='/shop-view'>
             <ArrowLeftIcon className='h-6 w-6 text-gray-500 ' />
           </Link>
-          <input className='align-middle pl-5   text-md  items-center w-full focus:outline-none ' type='text' placeholder='Search In {ShopName}' />
+          <input className='align-middle pl-5   text-md  items-center w-full focus:outline-none ' placeholder='Search In {ShopName}' type='text' />
           <SearchIcon className='h-7 w-7 text-gray-500 ' />
         </div>
       </div>

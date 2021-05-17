@@ -10,7 +10,7 @@ function ShopItem () {
         <p className='text-gray-600 text-md'>₹100</p>
       </div>
       <div className='flex flex-col relative'>
-        <img className='w-36 md:w-52 object-contain rounded-lg' src='https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ddmtz9afhxwblftsjj3k' alt='ItemImage' />
+        <img alt='ItemImage' className='w-36 md:w-52 object-contain rounded-lg' src='https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ddmtz9afhxwblftsjj3k' />
         <div className='absolute left-6 -bottom-6 md:left-14 bg-white w-24 h-10 items-center flex flex-row justify-between border border-gray-300 rounded-md'>
           <MinusIcon className='h-5 w-5  ml-2 text-gray-600' />
           <p className='text-gray-600 text-sm font-medium'>Add</p>
