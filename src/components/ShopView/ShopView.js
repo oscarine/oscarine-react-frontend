@@ -1,8 +1,8 @@
 import { StarIcon } from '@heroicons/react/solid'
 import React, { useEffect, useState } from 'react'
-import ShopItem from '../ShopView/ShopItem'
 import Header from '../Layouts/Header'
 import ShopHeader from './ShopHeader'
+import ItemCategory from './ItemCategory'
 
 function ShopView () {
   const [show, handleShow] = useState(false)
@@ -21,18 +21,18 @@ function ShopView () {
   }, [])
 
   return (
-    <div className=''>
+    <div className='bg-gray-100'>
       <div className='mob:hidden'>
         <Header />
       </div>
       <div className='md:hidden'>
         <ShopHeader show={show} />
       </div>
-      <div className='mt-16 md:mt-36 text-center pl-4 pr-4 mob:shadow-lg'>
+      <div className='bg-white mt-16 md:mt-36 text-center pl-4 pr-4 mob:shadow-lg'>
         <h1 className='font-medium text-black-500 text-xl'>Shop Name</h1>
         <p className='text-gray-500 text-md -mt-1 mb-5'>Description</p>
-        <hr className='max-w-4xl m-auto border-dashed' />
-        <div className='max-w-4xl m-auto flex flex-row justify-between p-5'>
+        <hr className='max-w-3xl m-auto border-dashed md:border-b-2 md:border-t-0' />
+        <div className='max-w-3xl m-auto flex flex-row justify-between p-5'>
           <div className='flex flex-col pr-3'>
             <div className='flex items-center'>
               <StarIcon className='h-4 w-4 pt-0.5 text-gray-600 ' />
@@ -46,26 +46,9 @@ function ShopView () {
           </div>
         </div>
       </div>
-      <div className='z-0 mt-2 mb-16 max-w-4xl m-auto p-2  grid gap-3 grid-cols-1 place-items-center'>
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-        <ShopItem />
-      </div>
-
+      <ItemCategory />
+      <ItemCategory />
+      <ItemCategory />
     </div>
 
   )
