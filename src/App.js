@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Login from './components/auth/Login'
 import SignUp from './components/auth/SignUp'
-import BottomNav from './components/Layouts/BottomNav'
-import Header from './components/Layouts/Header'
 import Home from './components/Home/Home'
 import Search from './components/Home/Search'
+import ShopSearch from './components/ShopView/ShopSearch'
+import ShopView from './components/ShopView/ShopView'
 
 function App () {
   return (
@@ -18,12 +18,15 @@ function App () {
         </Route>
         <Route path='/search'>
           <Search />
-          <BottomNav />
+        </Route>
+        <Route path='/shop-view'>
+          <ShopView />
+        </Route>
+        <Route path='/shop-search'>
+          <ShopSearch />
         </Route>
         <Route path='/'>
-          <Header />
           <Home />
-          <BottomNav />
         </Route>
       </Switch>
     </Router>
