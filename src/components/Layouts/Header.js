@@ -15,7 +15,7 @@ function Header () {
         </div>
         <div className='mob:hidden flex flex-row p-1 object-right'>
           <div className='mr-10'>
-            <NavLink to='/search' className='text-gray-500' activeClassName='text-yellow-400'>
+            <NavLink activeClassName='text-yellow-400' className='text-gray-500' to='/search'>
               <div className='group flex flex-row items-center'>
                 <SearchIcon className='h-5 w-5 text-current group-hover:text-yellow-400' />
                 <p className='ml-1 font-medium text-current text-lg group-hover:text-yellow-400'>Search</p>
