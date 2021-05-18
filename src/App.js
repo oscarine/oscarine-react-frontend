@@ -23,7 +23,9 @@ function App () {
           <ShopView />
         </Route>
         <Route path='/shop-search'>
-          <ShopSearch />
+          <div className='md:hidden'>
+            <ShopSearch />
+          </div>
         </Route>
         <Route path='/'>
           <Home />

@@ -47,7 +47,9 @@ function ShopView () {
           </div>
         </div>
       </div>
-      <ShopSearch />
+      <div className='mob:hidden'>
+        <ShopSearch />
+      </div>
       <ItemCategory />
       <ItemCategory />
       <ItemCategory />
