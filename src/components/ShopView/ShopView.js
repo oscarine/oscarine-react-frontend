@@ -2,6 +2,7 @@ import { StarIcon } from '@heroicons/react/solid'
 import React, { useEffect, useState } from 'react'
 import Header from '../Layouts/Header'
 import ShopHeader from './ShopHeader'
+import ShopSearch from './ShopSearch'
 import ItemCategory from './ItemCategory'
 
 function ShopView () {
@@ -45,6 +46,9 @@ function ShopView () {
             <p className='text-gray-500 text-xs'>For Delivery</p>
           </div>
         </div>
+      </div>
+      <div className='mob:hidden'>
+        <ShopSearch />
       </div>
       <ItemCategory />
       <ItemCategory />

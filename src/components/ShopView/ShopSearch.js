@@ -4,16 +4,12 @@ import { Link } from 'react-router-dom'
 
 function ShopSearch () {
   return (
-    <div>
-      <div className='pl-5 pr-5 fixed top-0 z-10 bg-white w-full h-14 shadow-lg '>
-        <div className='h-full items-center flex flex-row justify-between'>
-          <Link to='/shop-view'>
-            <ArrowLeftIcon className='h-6 w-6 text-gray-500 ' />
-          </Link>
-          <input className='align-middle pl-5   text-md  items-center w-full focus:outline-none ' placeholder='Search In {ShopName}' type='text' />
-          <SearchIcon className='h-7 w-7 text-gray-500 ' />
-        </div>
-      </div>
+    <div className='pl-5 pr-5 mob:fixed top-0 z-10 bg-white md:max-w-lg m-auto w-full h-14 md:h-12 mob:shadow-lg items-center flex flex-row justify-between md:-mt-6 md:bg-gray-200 '>
+      <Link to='/shop-view'>
+        <ArrowLeftIcon className='h-6 w-6 text-gray-500 md:hidden' />
+      </Link>
+      <input className='align-middle pl-5   text-md  items-center w-full focus:outline-none md:bg-gray-200 ' placeholder='Search In {ShopName}' type='text' />
+      <SearchIcon className='h-7 w-7 text-gray-500 ' />
     </div>
   )
 }
