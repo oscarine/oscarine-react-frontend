@@ -1,29 +1,29 @@
 import { LightBulbIcon, SearchIcon, ShoppingBagIcon, UserIcon } from '@heroicons/react/outline'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 function BottomNav () {
   return (
-    <div className='md:hidden h-14 fixed bottom-0 w-full justify-between flex flex-row bg-white shadow-inner'>
-      <Link to='/'>
-        <div className='ml-3 group flex flex-col items-center pt-2 '>
-          <LightBulbIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400  ' />
-          <p className='font-medium text-gray-500 text-sm group-hover:text-yellow-400'>NEAR ME</p>
+    <div className='md:hidden h-14 fixed bottom-0 w-full justify-between flex flex-row bg-white shadow-inner border-t-2 border-gray-200'>
+      <NavLink activeClassName='text-yellow-400' className='text-gray-500' exact to='/'>
+        <div className='ml-6 flex flex-col items-center pt-2'>
+          <LightBulbIcon className='h-6 w-6  text-current' />
+          <p className='font-medium text-current text-xs'>NEAR ME</p>
         </div>
-      </Link>
-      <Link to='/search'>
-        <div className='group flex flex-col items-center pt-2 '>
-          <SearchIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400  ' />
-          <p className='font-medium text-gray-500 text-sm group-hover:text-yellow-400'>SEARCH</p>
+      </NavLink>
+      <NavLink activeClassName='text-yellow-400' className='text-gray-500' to='/search'>
+        <div className='flex flex-col items-center pt-2 '>
+          <SearchIcon className='h-6 w-6 text-current' />
+          <p className='font-medium text-current text-xs'>SEARCH</p>
         </div>
-      </Link>
+      </NavLink>
       <div className='group flex flex-col items-center pt-2 '>
-        <ShoppingBagIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400  ' />
-        <p className=' font-medium text-gray-500 text-sm group-hover:text-yellow-400'>CART</p>
+        <ShoppingBagIcon className='h-6 w-6 text-gray-500 group-hover:text-yellow-400  ' />
+        <p className='font-medium text-gray-500 text-xs group-hover:text-yellow-400'>CART</p>
       </div>
-      <div className='mr-3 group flex flex-col items-center pt-2 '>
-        <UserIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400  ' />
-        <p className='font-medium text-gray-500 text-sm group-hover:text-yellow-400'>ACCOUNT</p>
+      <div className='mr-6 group flex flex-col items-center pt-2 '>
+        <UserIcon className='h-6 w-6 text-gray-500 group-hover:text-yellow-400  ' />
+        <p className='font-medium text-gray-500 text-xs group-hover:text-yellow-400'>ACCOUNT</p>
       </div>
     </div>
   )
