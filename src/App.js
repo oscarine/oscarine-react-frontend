@@ -7,6 +7,7 @@ import ShopSearch from './components/ShopView/ShopSearch'
 import ShopView from './components/ShopView/ShopView'
 
 function App () {
+  const shopSearch = (<div className='md:hidden'><ShopSearch /></div>)
   return (
     <Router>
       <Switch>
@@ -23,9 +24,7 @@ function App () {
           <ShopView />
         </Route>
         <Route path='/shop-search'>
-          <div className='md:hidden'>
-            <ShopSearch />
-          </div>
+          {shopSearch}
         </Route>
         <Route path='/'>
           <Home />
