@@ -4,6 +4,7 @@
         "bulma",
         "compat",
         "craco",
+        "formik",
         "heroicons",
         "oscarine",
         "stylelint",
