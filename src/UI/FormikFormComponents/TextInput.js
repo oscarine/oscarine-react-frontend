@@ -1,4 +1,5 @@
 import { useField } from 'formik'
+import PropTypes from 'prop-types'
 import Aux from '../Aux'
 
 const TextInput = ({ label, ...props }) => {
@@ -22,6 +23,15 @@ const TextInput = ({ label, ...props }) => {
         </div>}
     </Aux>
   )
+}
+
+TextInput.propTypes = {
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  autoComplete: PropTypes.string,
+  id: PropTypes.string
 }
 
 export default TextInput
