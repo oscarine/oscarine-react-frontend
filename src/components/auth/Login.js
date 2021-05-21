@@ -24,7 +24,7 @@ const Login = () => {
     >
       <div className='w-4/5 max-w-sm mt-10 container mx-auto p-5 bg-white rounded-xl shadow-md border border-gray-300  flex flex-col ...'>
         <h1 className='text-center text-2xl font-medium text-black p-6'>Login</h1>
-        <Form className='flex flex-col ...' title='loginForm'>
+        <Form className='flex flex-col ...' data-testid='login-form'>
           <TextInput
             label='Email'
             name='email'

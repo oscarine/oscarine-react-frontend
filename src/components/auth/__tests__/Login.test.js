@@ -5,8 +5,8 @@ import Login from '../Login'
 afterEach(cleanup)
 
 it('check login form render', () => {
-  const { queryByTitle, queryByLabelText, queryByTestId } = render(<MemoryRouter><Login /></MemoryRouter>)
-  const form = queryByTitle('loginForm')
+  const { queryByTestId, queryByLabelText } = render(<MemoryRouter><Login /></MemoryRouter>)
+  const form = queryByTestId('login-form')
   expect(form).toHaveClass('flex')
   expect(form).toHaveClass('flex-col')
 
