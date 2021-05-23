@@ -26,10 +26,8 @@ function ShopView () {
       <div className='mob:hidden'>
         <Header />
       </div>
-      <div className='md:hidden'>
-        <ShopHeader show={show} />
-      </div>
-      <div className='bg-white mt-16 md:mt-36 text-center pl-4 pr-4 mob:shadow-lg'>
+      <ShopHeader show={show} />
+      <div className='bg-white pt-16 md:pt-36 text-center pl-4 pr-4 mob:shadow-lg'>
         <h1 className='font-medium text-black-500 text-xl'>Shop Name</h1>
         <p className='text-gray-500 text-md -mt-1 mb-5'>Description</p>
         <hr className='max-w-3xl m-auto border-dashed md:border-b-2 md:border-t-0' />

@@ -17,10 +17,12 @@ function BottomNav () {
           <p className='font-medium text-current text-xs'>SEARCH</p>
         </div>
       </NavLink>
-      <div className='group flex flex-col items-center pt-2 '>
-        <ShoppingBagIcon className='h-6 w-6 text-gray-500 group-hover:text-yellow-400  ' />
-        <p className='font-medium text-gray-500 text-xs group-hover:text-yellow-400'>CART</p>
-      </div>
+      <NavLink activeClassName='text-yellow-400' className='text-gray-500' to='/cart'>
+        <div className='flex flex-col items-center pt-2 '>
+          <ShoppingBagIcon className='h-6 w-6 text-current ' />
+          <p className='font-medium text-current text-xs'>CART</p>
+        </div>
+      </NavLink>
       <div className='mr-6 group flex flex-col items-center pt-2 '>
         <UserIcon className='h-6 w-6 text-gray-500 group-hover:text-yellow-400  ' />
         <p className='font-medium text-gray-500 text-xs group-hover:text-yellow-400'>ACCOUNT</p>
