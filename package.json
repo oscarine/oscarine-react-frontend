@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@netlify/plugin-lighthouse": "^2.1.0",
     "autoprefixer": "^9",
     "postcss": "^7",
     "snazzy": "^9.0.0",
