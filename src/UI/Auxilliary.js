@@ -1,4 +1,4 @@
-const Aux = ({ className, ...props }) => {
+const Auxilliary = ({ className, ...props }) => {
   return (
     <div className={className}>
       {props.children}
@@ -6,4 +6,4 @@ const Aux = ({ className, ...props }) => {
   )
 }
 
-export default Aux
+export default Auxilliary
