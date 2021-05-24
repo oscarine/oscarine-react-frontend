@@ -1,17 +1,19 @@
 import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import Aux from '../Aux'
+import Auxilliary from '../Auxilliary'
 
 afterEach(cleanup)
 
-it('Check Aux component rendering', () => {
-  const { queryByText } = render(
-    <Aux className='flex flex-col'>
-      Hello testing
-    </Aux>)
+it('Check Auxilliary component rendering', () => {
+  const { queryByText, queryByTestId } = render(
+    <Auxilliary className='flex flex-col'>
+      <p>Hello testing</p>
+      <p>Hello</p>
+    </Auxilliary>)
   const el = queryByText('Hello testing')
   expect(el).toBeTruthy()
-  expect(el).toHaveClass('flex')
-  expect(el).toHaveClass('flex-col')
   expect(el).toContainHTML('Hello testing')
+  const aux = queryByTestId('aux-parent-div')
+  expect(aux).toBeTruthy()
+  expect(aux.className).toBe('flex flex-col')
 })
