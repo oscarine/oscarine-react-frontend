@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 const Auxilliary = ({ className, ...props }) => {
   return (
-    <div data-testid='aux-parent-div' className={className}>
+    <div className={className} data-testid='aux-parent-div'>
       {props.children}
     </div>
   )
