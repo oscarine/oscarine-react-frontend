@@ -5,13 +5,15 @@ import Auxilliary from '../Auxilliary'
 afterEach(cleanup)
 
 it('Check Auxilliary component rendering', () => {
-  const { queryByText } = render(
+  const { queryByText, queryByTestId } = render(
     <Auxilliary className='flex flex-col'>
-      Hello testing
+      <p>Hello testing</p>
+      <p>Hello</p>
     </Auxilliary>)
   const el = queryByText('Hello testing')
   expect(el).toBeTruthy()
-  expect(el).toHaveClass('flex')
-  expect(el).toHaveClass('flex-col')
   expect(el).toContainHTML('Hello testing')
+  const aux = queryByTestId('aux-parent-div')
+  expect(aux).toBeTruthy()
+  expect(aux.className).toBe('flex flex-col')
 })

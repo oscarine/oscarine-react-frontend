@@ -2,20 +2,20 @@ import PropTypes from 'prop-types'
 
 const Auxilliary = ({ className, ...props }) => {
   return (
-    <div className={className}>
+    <div data-testid='aux-parent-div' className={className}>
       {props.children}
     </div>
   )
 }
 
 Auxilliary.propTypes = {
-  className: PropTypes.string,
   children: PropTypes.arrayOf(PropTypes.oneOfType(
     [
       PropTypes.element,
       PropTypes.bool
     ]
-  )).isRequired
+  )).isRequired,
+  className: PropTypes.string.isRequired
 }
 
 export default Auxilliary
