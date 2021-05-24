@@ -13,7 +13,7 @@ function Cart () {
       </div>
       <ShopHeader show inCart />
       <div className='md:w-11/12 md:flex md:flex-row md:max-w-6xl m-auto md:justify-between place-items-top'>
-        <div className='bg-white mob:pt-16 z-0  max-w-3xl md:w-3/5 m-auto p-3 md:pl-10 md:pr-10 grid gap-0 grid-cols-1 place-items-center'>
+        <div className='bg-white mob:pt-16 z-0  max-w-3xl md:w-3/5 m-auto p-3 md:pt-1 md:pl-10 md:pr-10 grid gap-0 grid-cols-1 place-items-center'>
           <ShopItem inCart />
           <ShopItem inCart />
           <ShopItem inCart />
