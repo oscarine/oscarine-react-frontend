@@ -1,30 +1,38 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextInput from '../../UI/FormikFormComponents/TextInput'
-import useAxios from 'axios-hooks'
 import { LOGIN_URL } from '../../endpoints'
 
+const axios = require('axios').default
+
 const Login = () => {
-  const [errorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const [{ data: postData, loading: postLoading, error: postError }, executePost] = useAxios(
-    {
-      url: LOGIN_URL,
-      method: 'POST'
-    },
-    { manual: true, ssr: false }
-  )
-
-  const sendLoginData = (email, password) => {
-    executePost({
-      data: {
-        email: email,
-        password: password
+  const loginHandler = useCallback((email, password) => {
+    async function postLoginDetails () {
+      try {
+        const response = await axios.post(LOGIN_URL, {
+          email: email,
+          password: password
+        })
+        if (response.status === 200) {
+          setErrorMessage('')
+          console.log(response.data)
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          setErrorMessage('Incorrect email or password')
+        } else if (error.response.status === 422) {
+          setErrorMessage(
+            'Invalid data provided. Please enter the valid email and password values'
+          )
+        }
       }
-    })
-  }
+    }
+    postLoginDetails()
+  }, [])
 
   // const loginHandler = async (email, password) => {
   //   try {
@@ -33,12 +41,16 @@ const Login = () => {
   //       password: password
   //     })
   //     if (response.status === 200) {
+  //       setErrorMessage('')
   //       console.log(response.data)
   //     }
   //   } catch (error) {
   //     if (error.response.status === 401) {
   //       setErrorMessage('Incorrect email or password')
-  //       console.log('yes')
+  //     } else if (error.response.status === 422) {
+  //       setErrorMessage(
+  //         'Invalid data provided. Please enter the valid email and password values'
+  //       )
   //     }
   //   }
   // }
@@ -54,7 +66,7 @@ const Login = () => {
         password: Yup.string().required('Required')
       })}
       onSubmit={(values, { setSubmitting }) => {
-        sendLoginData(values.email, values.password)
+        loginHandler(values.email, values.password)
         setSubmitting(false)
       }}
     >
@@ -81,11 +93,6 @@ const Login = () => {
           <button data-testid='login-submit-btn' className='font-semibold p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ...' type='submit'>Login</button>
         </Form>
         <p className='text-sm text-center mt-3'>Don't have an account? <span className='text-blue-500 cursor-pointer'><Link to='/signup'><strong>Sign up</strong></Link></span></p>
-        <div>
-          {postData}
-          {postLoading}
-          {postError}
-        </div>
       </div>
     </Formik>
   )
