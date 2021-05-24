@@ -1,11 +1,11 @@
 import { useField } from 'formik'
 import PropTypes from 'prop-types'
-import Aux from '../Aux'
+import Auxilliary from '../Auxilliary'
 
 const TextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props)
   return (
-    <Aux className='flex flex-col pb-3'>
+    <Auxilliary className='flex flex-col pb-3'>
       <label
         htmlFor={props.id || props.name}
         className='text-m font-semibold text-black pb-2'
@@ -21,7 +21,7 @@ const TextInput = ({ label, ...props }) => {
         <div className='pt-1'>
           <p data-testid={'error-' + props.name} className='text-red-600'>{meta.error}</p>
         </div>}
-    </Aux>
+    </Auxilliary>
   )
 }
 
