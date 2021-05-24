@@ -44,10 +44,10 @@ function Home () {
       <div className='bg-gray-100 z-0 mt-16 pb-16  max-w-6xl m-auto p-2 md:p-6 grid gap-3 grid-cols-1 md:grid-cols-auto  place-items-center'>
         {!loading
           ? (shops.map((shop) => (<Shop
+              address={shop.address}
               id={shop.id}
               key={shop.id}
               name={shop.name}
-              address={shop.address}
               phone_number={shop.phone_number}
                                   />)))
           : <p>Loading shops near you...</p>}
