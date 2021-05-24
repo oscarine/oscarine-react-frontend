@@ -14,29 +14,32 @@ function Home () {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setLatitude(position.coords.latitude)
-      setLongitude(position.coords.longitude)
-    })
+    async function position () {
+      await navigator.geolocation.getCurrentPosition(function (position) {
+        setLatitude(position.coords.latitude)
+        setLongitude(position.coords.longitude)
+      })
+    }
+
+    async function shopsListGetRequest () {
+      try {
+        const resp = await axios.get('/api/v1/shops-list', { params: { longitude: longitude, latitude: latitude } })
+        setLoading(false)
+        setError(null)
+        dispatch({
+          type: 'FETCH_SHOPS',
+          shopData: resp.data
+        })
+      } catch (err) {
+        setLoading(false)
+        setError(err.message)
+      }
+    }
+    position()
     if (longitude && latitude) {
       shopsListGetRequest()
     }
   }, [latitude, longitude])
-
-  const shopsListGetRequest = async () => {
-    try {
-      const resp = await axios.get('/api/v1/shops-list', { params: { longitude: longitude, latitude: latitude } })
-      setLoading(false)
-      setError(null)
-      dispatch({
-        type: 'FETCH_SHOPS',
-        shopData: resp.data
-      })
-    } catch (err) {
-      setLoading(false)
-      setError(err.message)
-    }
-  }
 
   return (
     <div className='bg-gray-100 '>
