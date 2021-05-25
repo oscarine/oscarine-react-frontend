@@ -15,10 +15,15 @@ function Home () {
 
   useEffect(() => {
     async function position () {
-      await navigator.geolocation.getCurrentPosition(function (position) {
-        setLatitude(position.coords.latitude)
-        setLongitude(position.coords.longitude)
-      })
+      try {
+        await navigator.geolocation.getCurrentPosition(function (position) {
+          setLatitude(position.coords.latitude)
+          setLongitude(position.coords.longitude)
+        })
+      } catch (err) {
+        setLoading(false)
+        setError(err.message)
+      }
     }
 
     async function shopsListGetRequest () {
