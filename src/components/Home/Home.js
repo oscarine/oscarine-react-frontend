@@ -55,10 +55,11 @@ function Home () {
               address={shop.address}
               id={shop.id}
               key={shop.id}
+              loading={loading}
               name={shop.name}
               phone_number={shop.phone_number}
                                   />)))
-          : <p>Loading shops near you...</p>}
+          : (Array(8).fill(null).map(() => <Shop loading={loading}/>))}
         {error ? (<p>{error}</p>) : null}
       </div>
       <BottomNav />
