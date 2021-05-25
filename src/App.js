@@ -30,6 +30,9 @@ function App () {
           <Route path='/shop-search'>
             {shopSearch}
           </Route>
+          <Route path='/cart'>
+            <Cart />
+          </Route>
           <Route path='/'>
             <Home />
           </Route>
