@@ -5,7 +5,7 @@ function ShopItem ({ inCart }) {
   return (
     <div className={`justify-between mt-0 pt-2 pb-1 md:p-3 ${!inCart && 'border-b-2 pb-9 md:pb-9 md:mt-2  p-3'} container mx-auto  bg-white flex flex-row  place-items-center md:transform ease-in-out duration-500`}>
       <div className='flex flex-col ml-1 md:ml-0  place-items-left'>
-        <h1 className={`md:mt-3 font-medium text-black-500 text-md md:text-lg ${!inCart && 'text-lg'}`}>Item Name</h1>
+        <h1 className={`md:mt-3 font-semibold text-black-500 text-md md:text-lg ${!inCart && 'text-lg'}`}>Item Name</h1>
         <p className='text-gray-500 text-sm -mt-1'>Description</p>
         <p className={`text-gray-600 text-md ${inCart && 'hidden'}`}>₹100</p>
       </div>

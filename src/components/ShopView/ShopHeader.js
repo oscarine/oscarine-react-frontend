@@ -9,7 +9,7 @@ function ShopHeader ({ show, inCart }) {
         <Link to='/'>
           <ArrowLeftIcon className='h-6 w-6 text-gray-500 ' />
         </Link>
-        <p className={`ml-4 text-gray-600 font-medium text-black-500 text-lg text-left w-full ease-in-out duration-500 ${!show && 'hidden'}`}>Shop Name</p>
+        <p className={`ml-4 text-gray-600 font-semibold text-black-500 text-lg text-left w-full ease-in-out duration-500 ${!show && 'hidden'}`}>Shop Name</p>
         <Link to='/shop-search'>
           <SearchIcon className={`h-6 w-6 text-gray-500  ${inCart && 'hidden'}`} />
         </Link>
