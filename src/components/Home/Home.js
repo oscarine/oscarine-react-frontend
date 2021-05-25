@@ -44,7 +44,7 @@ function Home () {
     if (longitude && latitude) {
       shopsListGetRequest()
     }
-  }, [latitude, longitude])
+  }, [latitude, longitude, dispatch])
 
   return (
     <div className='bg-gray-100 '>
