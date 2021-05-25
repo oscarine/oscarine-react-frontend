@@ -6,6 +6,7 @@
     "@craco/craco": "^6.1.2",
     "@heroicons/react": "^1.0.1",
     "@testing-library/jest-dom": "^5.11.4",
+    "axios": "^0.21.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
     "formik": "^2.2.8",
