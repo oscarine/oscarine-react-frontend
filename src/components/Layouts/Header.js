@@ -13,23 +13,23 @@ function Header () {
             <p>Address</p>
           </div>
         </div>
-        <div className='mob:hidden flex flex-row p-1 object-right'>
-          <div className='mr-10'>
-            <NavLink activeClassName='text-yellow-400' className='text-gray-500' to='/search'>
-              <div className='group flex flex-row items-center'>
-                <SearchIcon className='h-5 w-5 text-current group-hover:text-yellow-400' />
-                <p className='ml-1 font-medium text-current text-lg group-hover:text-yellow-400'>Search</p>
-              </div>
-            </NavLink>
-          </div>
+        <div className='mob:hidden justify-between flex flex-row p-1 object-right'>
+          <NavLink activeClassName='text-yellow-400' className='text-gray-500 mr-10' to='/search'>
+            <div className='group flex flex-row items-center'>
+              <SearchIcon className='h-5 w-5 text-current group-hover:text-yellow-400' />
+              <p className='ml-1 font-medium text-current text-lg group-hover:text-yellow-400'>Search</p>
+            </div>
+          </NavLink>
           <div className='ml-10 mr-10 group flex flex-row items-center'>
             <UserIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400' />
             <p className='ml-1 font-medium text-gray-500 text-lg group-hover:text-yellow-400'>User</p>
           </div>
-          <div className='ml-10 group flex flex-row items-center'>
-            <ShoppingBagIcon className='h-5 w-5 text-gray-500 group-hover:text-yellow-400' />
-            <p className='ml-1 font-medium text-gray-500 text-lg group-hover:text-yellow-400'>0</p>
-          </div>
+          <NavLink activeClassName='text-yellow-400' className='text-gray-500 ml-10' to='/cart'>
+            <div className='group flex flex-row items-center'>
+              <ShoppingBagIcon className='h-5 w-5 text-current group-hover:text-yellow-400' />
+              <p className='ml-1 font-medium text-current text-lg group-hover:text-yellow-400'>0</p>
+            </div>
+          </NavLink>
         </div>
       </div>
     </div>

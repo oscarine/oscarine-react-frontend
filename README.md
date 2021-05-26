@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1d62521e-343d-4ece-9b77-a1deb5cb64ec/deploy-status)](https://app.netlify.com/sites/oscarine-react-frontend/deploys)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
