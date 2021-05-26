@@ -5,6 +5,8 @@ import Shop from './Shop'
 import axios from '../../axios'
 import reducer, { initialState } from './reducer'
 
+const loadingShops = Array.from(Array(8)).map(x => Math.floor(Math.random() * 1000))
+
 function Home () {
   const [{ shops }, dispatch] = useReducer(reducer, initialState)
 
@@ -59,7 +61,7 @@ function Home () {
               name={shop.name}
               phone_number={shop.phone_number}
                                   />)))
-          : (Array(8).fill(null).map(() => <Shop loading={loading}/>))}
+          : loadingShops.map((id) => <Shop key={id} loading={loading} />)}
         {error ? (<p>{error}</p>) : null}
       </div>
       <BottomNav />
