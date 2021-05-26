@@ -10,7 +10,7 @@ const reducer = (state, action) => {
         shops: action.shopData
       }
     default:
-      return state
+      throw new Error('Invalid action')
   }
 }
 
