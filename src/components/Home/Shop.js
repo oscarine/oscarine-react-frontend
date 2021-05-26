@@ -1,11 +1,14 @@
 import { StarIcon } from '@heroicons/react/solid'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 function Shop ({ address, loading, name }) {
-  const linkDisableHandler = (event) => {
-    loading && event.preventDefault()
-  }
+  const linkDisableHandler = useCallback(
+    (event) => {
+      loading && event.preventDefault()
+    },
+    [loading]
+  )
 
   return (
     <Link className={`mt-0 md:mt-5 lg:w-64  container mx-auto p-4 bg-white rounded-xl border ${!loading && 'hover:border-gray-300'}  flex flex-row md:flex-col  place-items-center md:transform ${!loading && 'hover:scale-105'} ease-in-out duration-500`} onClick={linkDisableHandler} to='/shop-view'>
