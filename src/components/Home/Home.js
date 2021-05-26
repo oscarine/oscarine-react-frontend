@@ -5,7 +5,7 @@ import Shop from './Shop'
 import axios from '../../axios'
 import reducer, { initialState } from './reducer'
 
-const loadingShops = Array.from(Array(8)).map(x => Math.floor(Math.random() * 1000))
+const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
 
 function Home () {
   const [{ shops }, dispatch] = useReducer(reducer, initialState)
