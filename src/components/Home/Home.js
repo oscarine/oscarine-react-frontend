@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import BottomNav from '../Layouts/BottomNav'
 import Header from '../Layouts/Header'
 import Shop from './Shop'
 import axios from '../../axios'
-import { useStateValue } from '../../StateProvider'
+import reducer, { initialState } from './reducer'
 
 function Home () {
-  const [{ shops }, dispatch] = useStateValue()
+  const [{ shops }, dispatch] = useReducer(reducer, initialState)
 
   const [latitude, setLatitude] = useState(null)
   const [longitude, setLongitude] = useState(null)
