@@ -33,4 +33,10 @@ Shop.propTypes = {
   name: PropTypes.string
 }
 
+Shop.defaultProps = {
+  address: '',
+  loading: false,
+  name: ''
+}
+
 export default Shop
