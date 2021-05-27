@@ -35,7 +35,6 @@ Shop.propTypes = {
 
 Shop.defaultProps = {
   address: '',
-  loading: false,
   name: ''
 }
 
