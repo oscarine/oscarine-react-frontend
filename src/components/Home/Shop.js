@@ -1,6 +1,7 @@
 import { StarIcon } from '@heroicons/react/solid'
 import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 function Shop ({ address, loading, name }) {
   const linkDisableHandler = useCallback(
@@ -24,6 +25,12 @@ function Shop ({ address, loading, name }) {
       </div>
     </Link>
   )
+}
+
+Shop.propTypes = {
+  address: PropTypes.string,
+  loading: PropTypes.bool.isRequired,
+  name: PropTypes.string
 }
 
 export default Shop
