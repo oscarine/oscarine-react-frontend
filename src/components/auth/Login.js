@@ -6,8 +6,7 @@ import TextInput from '../../UI/FormikFormComponents/TextInput'
 import { LOGIN_URL } from '../../endpoints'
 import AuthContext from '../../store/auth-context'
 import ThreeBounceLoader from '../../UI/ThreeBounceLoader'
-
-const axios = require('axios').default
+import axios from '../../axios'
 
 const httpReducer = (httpState, action) => {
   switch (action.type) {
