@@ -26,21 +26,23 @@ const Login = () => {
   const authCtx = useContext(AuthContext)
   const history = useHistory()
 
-  const loginHandler = useCallback((email, password) => {
+  const submitHandler = useCallback((values, { setSubmitting }) => {
     async function postLoginDetails () {
       httpDispatch({ type: 'SEND' })
       try {
         const response = await axios.post(LOGIN_URL, {
-          email: email,
-          password: password
+          email: values.email,
+          password: values.password
         })
         if (response.status === 200) {
           httpDispatch({ type: 'RESPONSE' })
+          setSubmitting(false)
           const authToken = response.data.access_token
           authCtx.login(authToken)
           history.push('/')
         }
       } catch (error) {
+        setSubmitting(false)
         switch (error.response?.status) {
           case 401: {
             httpDispatch({ type: 'ERROR', errorMessage: 'Incorrect email or password' })
@@ -71,10 +73,7 @@ const Login = () => {
         email: Yup.string().email('Invalid email address').required('Required'),
         password: Yup.string().required('Required')
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        loginHandler(values.email, values.password)
-        setSubmitting(false)
-      }}
+      onSubmit={submitHandler}
     >
       <div className='w-4/5 max-w-sm mt-10 container mx-auto p-5 bg-white rounded-xl shadow-md border border-gray-300  flex flex-col ...'>
         <h1 className='text-center text-2xl font-medium text-black p-6'>Login</h1>
