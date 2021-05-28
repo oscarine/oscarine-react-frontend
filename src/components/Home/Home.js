@@ -8,12 +8,10 @@ import reducer, { initialState } from './reducer'
 const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
 
 function Home () {
-  const [{ shops }, dispatch] = useReducer(reducer, initialState)
+  const [httpState, httpDispatch] = useReducer(reducer, initialState)
 
   const [latitude, setLatitude] = useState(null)
   const [longitude, setLongitude] = useState(null)
-  const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function position () {
@@ -23,46 +21,51 @@ function Home () {
           setLongitude(position.coords.longitude)
         })
       } catch (err) {
-        setLoading(false)
-        setError(err.message)
+        httpDispatch({
+          type: 'ERROR',
+          errorMessage: err.message
+        })
       }
     }
 
     async function shopsListGetRequest () {
+      httpDispatch({ type: 'SEND' })
       try {
         const resp = await axios.get('/api/v1/shops-list', { params: { longitude: longitude, latitude: latitude } })
-        setLoading(false)
-        setError(null)
-        dispatch({
-          type: 'FETCH_SHOPS',
-          shopData: resp.data
-        })
+        if (resp.status === 200) {
+          httpDispatch({
+            type: 'RESPONSE',
+            shopData: resp.data
+          })
+        }
       } catch (err) {
-        setLoading(false)
-        setError(err.message)
+        httpDispatch({
+          type: 'ERROR',
+          errorMessage: err.message
+        })
       }
     }
     position()
     if (longitude && latitude) {
       shopsListGetRequest()
     }
-  }, [latitude, longitude, dispatch])
+  }, [latitude, longitude])
 
   return (
     <div className='bg-gray-100 '>
       <Header />
       <div className='bg-gray-100 z-0 mt-16 pb-16  max-w-6xl m-auto p-2 md:p-6 grid gap-3 grid-cols-1 md:grid-cols-auto  place-items-center'>
-        {!loading
-          ? (shops.map((shop) => (<Shop
+        {!httpState.loading
+          ? (httpState.shops.map((shop) => (<Shop
               address={shop.address}
               id={shop.id}
               key={shop.id}
-              loading={loading}
+              loading={httpState.loading}
               name={shop.name}
               phone_number={shop.phone_number}
-                                  />)))
-          : loadingShops.map((id) => <Shop key={id} loading={loading} />)}
-        {error ? (<p>{error}</p>) : null}
+                                            />)))
+          : loadingShops.map((id) => <Shop key={id} loading={httpState.loading} />)}
+        {httpState.error ? (<p>{httpState.error}</p>) : null}
       </div>
       <BottomNav />
     </div>

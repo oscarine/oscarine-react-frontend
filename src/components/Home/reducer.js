@@ -1,13 +1,28 @@
 export const initialState = {
-  shops: []
+  shops: [],
+  loading: false,
+  error: null
 }
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_SHOPS' :
+    case 'SEND':
       return {
         ...state,
-        shops: action.shopData
+        loading: true,
+        error: null
+      }
+    case 'RESPONSE':
+      return {
+        shops: action.shopData,
+        loading: false,
+        error: null
+      }
+    case 'ERROR':
+      return {
+        ...state,
+        loading: false,
+        error: action.errorMessage
       }
     default:
       throw new Error('Invalid action')
