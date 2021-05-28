@@ -41,13 +41,20 @@ const Login = () => {
           history.push('/')
         }
       } catch (error) {
-        if (error.response.status === 401) {
-          httpDispatch({ type: 'ERROR', errorMessage: 'Incorrect email or password' })
-        } else if (error.response.status === 422) {
-          httpDispatch({
-            type: 'ERROR',
-            errorMessage: 'Invalid data provided. Please enter the valid email and password values'
-          })
+        switch (error.response?.status) {
+          case 401: {
+            httpDispatch({ type: 'ERROR', errorMessage: 'Incorrect email or password' })
+            break
+          }
+          case 422: {
+            httpDispatch({
+              type: 'ERROR',
+              errorMessage: 'Invalid data provided. Please enter the valid email and password values'
+            })
+            break
+          }
+          default:
+            httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
         }
       }
     }
@@ -89,13 +96,17 @@ const Login = () => {
             <div className='pt-1'>
               <p className='text-red-600'>{httpState.error}</p>
             </div>}
-          <button data-testid='login-submit-btn' className='h-10 font-semibold p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ...' type='submit'>
+          <button
+            className='h-10 font-semibold p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ...'
+            data-testid='login-submit-btn'
+            type='submit'
+          >
             {httpState.loading
               ? <ThreeBounceLoader />
               : 'Login'}
           </button>
         </Form>
-        <p className='text-sm text-center mt-3'>Don't have an account? <span className='text-blue-500 cursor-pointer'><Link to='/signup'><strong>Sign up</strong></Link></span></p>
+        <p className='text-sm text-center mt-3'>Don&apos;t have an account? <span className='text-blue-500 cursor-pointer'><Link to='/signup'><strong>Sign up</strong></Link></span></p>
       </div>
     </Formik>
   )

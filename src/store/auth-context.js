@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const AuthContext = React.createContext({
   token: '',
@@ -23,11 +24,17 @@ export const AuthContextProvider = (props) => {
     logout: logoutHandler
   }
 
+  const { children } = props
+
   return (
     <AuthContext.Provider value={contextValue}>
-      {props.children}
+      {children}
     </AuthContext.Provider>
   )
+}
+
+AuthContextProvider.propTypes = {
+  children: PropTypes.element.isRequired
 }
 
 export default AuthContext
