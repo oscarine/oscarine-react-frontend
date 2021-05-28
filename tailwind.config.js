@@ -10,6 +10,10 @@ module.exports = {
       screens: {
         mob: { max: '768px' }
       // => @media (max-width: 768px) { ... }
+      },
+      animation: {
+        'bounce-200': 'bounce 1s infinite 200ms',
+        'bounce-400': 'bounce 1s infinite 400ms'
       }
     }
   },

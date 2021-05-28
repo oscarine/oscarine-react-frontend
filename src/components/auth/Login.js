@@ -1,59 +1,59 @@
-import React, { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useReducer, useCallback, useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import TextInput from '../../UI/FormikFormComponents/TextInput'
 import { LOGIN_URL } from '../../endpoints'
+import AuthContext from '../../store/auth-context'
+import ThreeBounceLoader from '../../UI/ThreeBounceLoader'
 
 const axios = require('axios').default
 
+const httpReducer = (httpState, action) => {
+  switch (action.type) {
+    case 'SEND':
+      return { loading: true, error: null }
+    case 'RESPONSE':
+      return { loading: false, error: null }
+    case 'ERROR':
+      return { loading: false, error: action.errorMessage }
+    default:
+      throw new Error('Invalid httpReducer action')
+  }
+}
+
 const Login = () => {
-  const [errorMessage, setErrorMessage] = useState('')
+  const [httpState, httpDispatch] = useReducer(httpReducer, { loading: false, error: null })
+  const authCtx = useContext(AuthContext)
+  const history = useHistory()
 
   const loginHandler = useCallback((email, password) => {
     async function postLoginDetails () {
+      httpDispatch({ type: 'SEND' })
       try {
         const response = await axios.post(LOGIN_URL, {
           email: email,
           password: password
         })
         if (response.status === 200) {
-          setErrorMessage('')
-          console.log(response.data)
+          httpDispatch({ type: 'RESPONSE' })
+          const authToken = response.data.access_token
+          authCtx.login(authToken)
+          history.push('/')
         }
       } catch (error) {
         if (error.response.status === 401) {
-          setErrorMessage('Incorrect email or password')
+          httpDispatch({ type: 'ERROR', errorMessage: 'Incorrect email or password' })
         } else if (error.response.status === 422) {
-          setErrorMessage(
-            'Invalid data provided. Please enter the valid email and password values'
-          )
+          httpDispatch({
+            type: 'ERROR',
+            errorMessage: 'Invalid data provided. Please enter the valid email and password values'
+          })
         }
       }
     }
     postLoginDetails()
-  }, [])
-
-  // const loginHandler = async (email, password) => {
-  //   try {
-  //     const response = await axios.post(LOGIN_URL, {
-  //       email: email,
-  //       password: password
-  //     })
-  //     if (response.status === 200) {
-  //       setErrorMessage('')
-  //       console.log(response.data)
-  //     }
-  //   } catch (error) {
-  //     if (error.response.status === 401) {
-  //       setErrorMessage('Incorrect email or password')
-  //     } else if (error.response.status === 422) {
-  //       setErrorMessage(
-  //         'Invalid data provided. Please enter the valid email and password values'
-  //       )
-  //     }
-  //   }
-  // }
+  }, [authCtx, history])
 
   return (
     <Formik
@@ -86,11 +86,15 @@ const Login = () => {
             autoComplete='current-password'
             placeholder='Your password'
           />
-          {errorMessage && errorMessage.length > 0 &&
+          {httpState.error &&
             <div className='pt-1'>
-              <p className='text-red-600'>{errorMessage}</p>
+              <p className='text-red-600'>{httpState.error}</p>
             </div>}
-          <button data-testid='login-submit-btn' className='font-semibold p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ...' type='submit'>Login</button>
+          <button data-testid='login-submit-btn' className='h-10 font-semibold p-2 mt-6 rounded-xl shadow-md bg-yellow-300 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-50 ...' type='submit'>
+            {httpState.loading
+              ? <ThreeBounceLoader />
+              : 'Login'}
+          </button>
         </Form>
         <p className='text-sm text-center mt-3'>Don't have an account? <span className='text-blue-500 cursor-pointer'><Link to='/signup'><strong>Sign up</strong></Link></span></p>
       </div>
