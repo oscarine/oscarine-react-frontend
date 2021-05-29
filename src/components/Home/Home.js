@@ -4,6 +4,7 @@ import Header from '../Layouts/Header'
 import Shop from './Shop'
 import axios from '../../axios'
 import reducer, { initialState } from './reducer'
+import ErrorModal from '../../UI/ErrorModal'
 
 const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
 
@@ -20,10 +21,10 @@ function Home () {
           setLatitude(position.coords.latitude)
           setLongitude(position.coords.longitude)
         })
-      } catch (err) {
+      } catch (error) {
         httpDispatch({
           type: 'ERROR',
-          errorMessage: err.message
+          errorMessage: error.message
         })
       }
     }
@@ -38,11 +39,22 @@ function Home () {
             shopData: resp.data
           })
         }
-      } catch (err) {
-        httpDispatch({
-          type: 'ERROR',
-          errorMessage: err.message
-        })
+      } catch (error) {
+        switch (error.response?.status) {
+          case 404: {
+            httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There is no registered shops near you' })
+            break
+          }
+          case 422: {
+            httpDispatch({
+              type: 'ERROR',
+              errorMessage: 'Something went wrong'
+            })
+            break
+          }
+          default:
+            httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
+        }
       }
     }
     position()
@@ -56,17 +68,20 @@ function Home () {
       <Header />
       <div className='bg-gray-100 z-0 mt-16 pb-16  max-w-6xl m-auto p-2 md:p-6 grid gap-3 grid-cols-1 md:grid-cols-auto  place-items-center'>
         {!httpState.loading
-          ? (httpState.shops.map((shop) => (<Shop
-              address={shop.address}
-              id={shop.id}
-              key={shop.id}
-              loading={httpState.loading}
-              name={shop.name}
-              phone_number={shop.phone_number}
-                                            />)))
+          ? (!httpState.error
+              ? (httpState.shops.map((shop) => (<Shop
+                  address={shop.address}
+                  id={shop.id}
+                  key={shop.id}
+                  loading={httpState.loading}
+                  name={shop.name}
+                  phone_number={shop.phone_number}
+                                                />)))
+              : null)
           : loadingShops.map((id) => <Shop key={id} loading={httpState.loading} />)}
-        {httpState.error ? (<p>{httpState.error}</p>) : null}
+
       </div>
+      {httpState.error ? (<ErrorModal message={httpState.error} />) : null}
       <BottomNav />
     </div>
   )
