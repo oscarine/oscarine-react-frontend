@@ -6,7 +6,9 @@ import PropTypes from 'prop-types'
 function Shop ({ address, loading, name }) {
   const linkDisableHandler = useCallback(
     (event) => {
-      loading && event.preventDefault()
+      if (loading) {
+        event.preventDefault()
+      }
     },
     [loading]
   )
