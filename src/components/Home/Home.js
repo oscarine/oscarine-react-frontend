@@ -42,7 +42,7 @@ function Home () {
       } catch (error) {
         switch (error.response?.status) {
           case 404: {
-            httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There is no registered shops near you' })
+            httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
             break
           }
           case 422: {
