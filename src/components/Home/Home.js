@@ -16,8 +16,8 @@ function Home () {
   const [longitude, setLongitude] = useState(null)
 
   useEffect(() => {
-    function position () {
-      navigator.geolocation.getCurrentPosition(function (position) {
+    async function position () {
+      await navigator.geolocation.getCurrentPosition(function (position) {
         if (position.coords.latitude && position.coords.longitude) {
           setLatitude(position.coords.latitude)
           setLongitude(position.coords.longitude)
