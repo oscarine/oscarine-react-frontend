@@ -67,7 +67,9 @@ function Home () {
         if (localStorage.getItem('longitude') === null && localStorage.getItem('latitude') === null) {
           localStorage.setItem('longitude', longitude)
           localStorage.setItem('latitude', latitude)
-        } else if (latitude != localStorage.getItem('latitude') || longitude != localStorage.getItem('longitude')) {
+        }
+        // eslint-disable-next-line
+        else if (latitude != localStorage.getItem('latitude') || longitude != localStorage.getItem('longitude')) {
           localStorage.setItem('longitude', longitude)
           localStorage.setItem('latitude', latitude)
         }
