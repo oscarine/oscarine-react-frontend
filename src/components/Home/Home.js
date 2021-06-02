@@ -17,12 +17,16 @@ function Home () {
 
   useEffect(() => {
     async function position () {
-      await navigator.geolocation.getCurrentPosition(function (position) {
-        if (position.coords.latitude && position.coords.longitude) {
-          setLatitude(position.coords.latitude)
-          setLongitude(position.coords.longitude)
-        }
-      })
+      try {
+        await navigator.geolocation.getCurrentPosition(function (position) {
+          if (position.coords.latitude && position.coords.longitude) {
+            setLatitude(position.coords.latitude)
+            setLongitude(position.coords.longitude)
+          }
+        })
+      } catch {
+        httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
+      }
     }
     let unmounted = false
     const source = axios.CancelToken.source()
