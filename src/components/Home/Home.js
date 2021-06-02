@@ -60,7 +60,7 @@ function Home () {
     }
     function setLocalStorage () {
       if (latitude && longitude) {
-        if (localStorage.getItem('longitude') == null && localStorage.getItem('latitude') == null) {
+        if (localStorage.getItem('longitude') === null && localStorage.getItem('latitude') === null) {
           localStorage.setItem('longitude', longitude)
           localStorage.setItem('latitude', latitude)
         } else if (latitude != localStorage.getItem('latitude') || longitude != localStorage.getItem('longitude')) {
