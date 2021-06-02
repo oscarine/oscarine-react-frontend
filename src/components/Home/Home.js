@@ -2,7 +2,8 @@ import React, { useEffect, useState, useReducer } from 'react'
 import BottomNav from '../Layouts/BottomNav'
 import Header from '../Layouts/Header'
 import Shop from './Shop'
-import axios from '../../axios'
+import axiosInstance from '../../axios'
+import axios from 'axios'
 import reducer, { initialState } from './reducer'
 import ErrorModal from '../../UI/ErrorModal'
 
@@ -15,51 +16,75 @@ function Home () {
   const [longitude, setLongitude] = useState(null)
 
   useEffect(() => {
-    async function position () {
-      try {
-        await navigator.geolocation.getCurrentPosition(function (position) {
+    function position () {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        if (position.coords.latitude && position.coords.longitude) {
           setLatitude(position.coords.latitude)
           setLongitude(position.coords.longitude)
-        })
-      } catch (error) {
-        httpDispatch({
-          type: 'ERROR',
-          errorMessage: error.message
-        })
-      }
+        }
+      })
     }
-
+    let unmounted = false
+    const source = axios.CancelToken.source()
     async function shopsListGetRequest () {
       httpDispatch({ type: 'SEND' })
       try {
-        const resp = await axios.get('/api/v1/shops-list', { params: { longitude: longitude, latitude: latitude } })
-        if (resp.status === 200) {
-          httpDispatch({
-            type: 'RESPONSE',
-            shopData: resp.data
-          })
+        const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: localStorage.getItem('longitude'), latitude: localStorage.getItem('latitude') }, cancelToken: source.token })
+        if (!unmounted) {
+          if (resp.status === 200) {
+            httpDispatch({
+              type: 'RESPONSE',
+              shopData: resp.data
+            })
+          }
         }
       } catch (error) {
-        switch (error.response?.status) {
-          case 404: {
-            httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
-            break
+        if (!unmounted) {
+          switch (error.response?.status) {
+            case 404: {
+              httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
+              break
+            }
+            case 422: {
+              httpDispatch({
+                type: 'ERROR',
+                errorMessage: 'Something went wrong'
+              })
+              break
+            }
+            default:
+              httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
           }
-          case 422: {
-            httpDispatch({
-              type: 'ERROR',
-              errorMessage: 'Something went wrong'
-            })
-            break
-          }
-          default:
-            httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
+        }
+      }
+    }
+    function setLocalStorage () {
+      if (latitude && longitude) {
+        if (localStorage.getItem('longitude') == null && localStorage.getItem('latitude') == null) {
+          localStorage.setItem('longitude', longitude)
+          localStorage.setItem('latitude', latitude)
+        } else if (latitude != localStorage.getItem('latitude') || longitude != localStorage.getItem('longitude')) {
+          localStorage.setItem('longitude', longitude)
+          localStorage.setItem('latitude', latitude)
         }
       }
     }
     position()
-    if (longitude && latitude) {
+    setLocalStorage()
+    const interval = setInterval(() => { setLocalStorage() }, 30 * 60 * 1000)
+
+    if (localStorage.getItem('longitude') && localStorage.getItem('latitude')) {
       shopsListGetRequest()
+    } else {
+      httpDispatch({
+        type: 'ERROR',
+        errorMessage: 'Unable to find your location'
+      })
+    }
+    return () => {
+      unmounted = true
+      source.cancel('Cancelling in cleanup')
+      clearTimeout(interval)
     }
   }, [latitude, longitude])
 
