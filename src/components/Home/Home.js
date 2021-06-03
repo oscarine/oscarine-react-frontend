@@ -17,80 +17,92 @@ function Home () {
 
   useEffect(() => {
     async function position () {
-      try {
+      const now = new Date()
+      if (JSON.parse(localStorage.getItem('location') == null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
         await navigator.geolocation.getCurrentPosition(function (position) {
           if (position.coords.latitude && position.coords.longitude) {
             setLatitude(position.coords.latitude)
             setLongitude(position.coords.longitude)
           }
-        })
-      } catch {
-        httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
+        }, function (error) {
+          console.log(error)
+          switch (error.code) {
+            case 1: {
+              httpDispatch({ type: 'ERROR', errorMessage: 'Please allow access to access your location' })
+              break
+            }
+            case 2: {
+              httpDispatch({ type: 'ERROR', errorMessage: 'Unable to find your location' })
+              break
+            }
+            case 3: {
+              httpDispatch({ type: 'ERROR', errorMessage: 'Timeout!' })
+              break
+            }
+            default:
+              httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
+          }
+        }, { timeout: 15 * 1000 })
       }
     }
     let unmounted = false
     const source = axios.CancelToken.source()
     async function shopsListGetRequest () {
       httpDispatch({ type: 'SEND' })
-      try {
-        const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: localStorage.getItem('longitude'), latitude: localStorage.getItem('latitude') }, cancelToken: source.token })
-        if (!unmounted) {
-          if (resp.status === 200) {
-            httpDispatch({
-              type: 'RESPONSE',
-              shopData: resp.data
-            })
-          }
-        }
-      } catch (error) {
-        if (!unmounted) {
-          switch (error.response?.status) {
-            case 404: {
-              httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
-              break
-            }
-            case 422: {
+
+      const loc = JSON.parse(localStorage.getItem('location'))
+      if (loc) {
+        try {
+          const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: loc.longitude, latitude: loc.latitude }, cancelToken: source.token })
+          if (!unmounted) {
+            if (resp.status === 200) {
               httpDispatch({
-                type: 'ERROR',
-                errorMessage: 'Something went wrong'
+                type: 'RESPONSE',
+                shopData: resp.data
               })
-              break
             }
-            default:
-              httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
+          }
+        } catch (error) {
+          if (!unmounted) {
+            switch (error.response?.status) {
+              case 404: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
+                break
+              }
+              case 422: {
+                httpDispatch({
+                  type: 'ERROR',
+                  errorMessage: 'Something went wrong'
+                })
+                break
+              }
+              default:
+                httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
+            }
           }
         }
       }
     }
     function setLocalStorage () {
       if (latitude && longitude) {
-        if (localStorage.getItem('longitude') === null && localStorage.getItem('latitude') === null) {
-          localStorage.setItem('longitude', longitude)
-          localStorage.setItem('latitude', latitude)
-        }
-        // eslint-disable-next-line
-        else if (latitude != localStorage.getItem('latitude') || longitude != localStorage.getItem('longitude')) {
-          localStorage.setItem('longitude', longitude)
-          localStorage.setItem('latitude', latitude)
+        const now = new Date()
+        const location = { longitude: longitude, latitude: latitude, expiryTime: now.getTime() + 10 * 1000 }
+        const localStorageLoc = JSON.parse(localStorage.getItem('location'))
+        if (localStorageLoc == null) {
+          localStorage.setItem('location', JSON.stringify(location))
+        } else if (now.getTime() > localStorageLoc.expiryTime) {
+          localStorage.removeItem('location')
+          localStorage.setItem('location', JSON.stringify(location))
         }
       }
     }
     position()
     setLocalStorage()
-    const interval = setInterval(() => { setLocalStorage() }, 30 * 60 * 1000)
+    shopsListGetRequest()
 
-    if (localStorage.getItem('longitude') && localStorage.getItem('latitude')) {
-      shopsListGetRequest()
-    } else {
-      httpDispatch({
-        type: 'ERROR',
-        errorMessage: 'Unable to find your location'
-      })
-    }
     return () => {
       unmounted = true
       source.cancel('Cancelling in cleanup')
-      clearTimeout(interval)
     }
   }, [latitude, longitude])
 
