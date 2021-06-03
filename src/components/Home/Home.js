@@ -92,8 +92,8 @@ function Home () {
       if (latitude && longitude) {
         const now = new Date()
         const location = {
-          longitude: longitude,
-          latitude: latitude,
+          longitude,
+          latitude,
           expiryTime: now.getTime() + localStorageExpiryMin
         }
         const localStorageLoc = JSON.parse(localStorage.getItem('location'))
