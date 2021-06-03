@@ -19,31 +19,35 @@ function Home () {
 
   useEffect(() => {
     async function position () {
-      const now = new Date()
-      if (JSON.parse(localStorage.getItem('location') === null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
-        await navigator.geolocation.getCurrentPosition((pos) => {
-          if (pos.coords.latitude && pos.coords.longitude) {
-            setLatitude(pos.coords.latitude)
-            setLongitude(pos.coords.longitude)
-          }
-        }, (error) => {
-          switch (error.code) {
-            case 1: {
-              httpDispatch({ type: 'ERROR', errorMessage: 'Please allow access to access your location' })
-              break
+      try {
+        const now = new Date()
+        if (JSON.parse(localStorage.getItem('location') === null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
+          await navigator.geolocation.getCurrentPosition((pos) => {
+            if (pos.coords.latitude && pos.coords.longitude) {
+              setLatitude(pos.coords.latitude)
+              setLongitude(pos.coords.longitude)
             }
-            case 2: {
-              httpDispatch({ type: 'ERROR', errorMessage: 'Unable to find your location' })
-              break
+          }, (error) => {
+            switch (error.code) {
+              case 1: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Please allow access to access your location' })
+                break
+              }
+              case 2: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Unable to find your location' })
+                break
+              }
+              case 3: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Timeout!' })
+                break
+              }
+              default:
+                httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
             }
-            case 3: {
-              httpDispatch({ type: 'ERROR', errorMessage: 'Timeout!' })
-              break
-            }
-            default:
-              httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
-          }
-        }, navigatorTimeout)
+          }, navigatorTimeout)
+        }
+      } catch (error) {
+        httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
       }
     }
     let unmounted = false
