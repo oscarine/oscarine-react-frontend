@@ -1,13 +1,15 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import axios from 'axios'
+import axiosInstance from '../../axios'
 import BottomNav from '../Layouts/BottomNav'
+import ErrorModal from '../../UI/ErrorModal'
 import Header from '../Layouts/Header'
 import Shop from './Shop'
-import axiosInstance from '../../axios'
-import axios from 'axios'
+import React, { useEffect, useReducer, useState } from 'react'
 import reducer, { initialState } from './reducer'
-import ErrorModal from '../../UI/ErrorModal'
 
 const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
+const navigatorTimeout = { timeout: 15 * 1000 }
+const localStorageExpiryMin = 10 * 60 * 1000
 
 function Home () {
   const [httpState, httpDispatch] = useReducer(reducer, initialState)
@@ -18,14 +20,13 @@ function Home () {
   useEffect(() => {
     async function position () {
       const now = new Date()
-      if (JSON.parse(localStorage.getItem('location') == null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
-        await navigator.geolocation.getCurrentPosition(function (position) {
-          if (position.coords.latitude && position.coords.longitude) {
-            setLatitude(position.coords.latitude)
-            setLongitude(position.coords.longitude)
+      if (JSON.parse(localStorage.getItem('location') === null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
+        await navigator.geolocation.getCurrentPosition((pos) => {
+          if (pos.coords.latitude && pos.coords.longitude) {
+            setLatitude(pos.coords.latitude)
+            setLongitude(pos.coords.longitude)
           }
-        }, function (error) {
-          console.log(error)
+        }, (error) => {
           switch (error.code) {
             case 1: {
               httpDispatch({ type: 'ERROR', errorMessage: 'Please allow access to access your location' })
@@ -42,7 +43,7 @@ function Home () {
             default:
               httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
           }
-        }, { timeout: 15 * 1000 })
+        }, navigatorTimeout)
       }
     }
     let unmounted = false
@@ -86,9 +87,13 @@ function Home () {
     function setLocalStorage () {
       if (latitude && longitude) {
         const now = new Date()
-        const location = { longitude: longitude, latitude: latitude, expiryTime: now.getTime() + 10 * 1000 }
+        const location = {
+          longitude: longitude,
+          latitude: latitude,
+          expiryTime: now.getTime() + localStorageExpiryMin
+        }
         const localStorageLoc = JSON.parse(localStorage.getItem('location'))
-        if (localStorageLoc == null) {
+        if (localStorageLoc === null) {
           localStorage.setItem('location', JSON.stringify(location))
         } else if (now.getTime() > localStorageLoc.expiryTime) {
           localStorage.removeItem('location')
