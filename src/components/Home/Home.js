@@ -6,45 +6,48 @@ import Header from '../Layouts/Header'
 import Shop from './Shop'
 import React, { useEffect, useReducer, useState } from 'react'
 import reducer, { initialState } from './reducer'
+import { localStorageExpiryTime, navigatorOptions } from '../../settings/config'
+import { getLocalStorage, setLocalStorage, removeLocalStorage } from '../../utils/storage'
+import { HTTP_200, HTTP_404, HTTP_422 } from '../../const/httpStatus'
+import { ERROR_CODE_1, ERROR_CODE_2, ERROR_CODE_3 } from '../../const/navigatorErrorCode'
 
 const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
-const navigatorTimeout = { timeout: 15 * 1000 }
-const localStorageExpiryMin = 10 * 60 * 1000
 
 function Home () {
   const [httpState, httpDispatch] = useReducer(reducer, initialState)
 
-  const [latitude, setLatitude] = useState(null)
-  const [longitude, setLongitude] = useState(null)
+  const [location, setLocation] = useState(null)
 
   useEffect(() => {
     async function position () {
       const now = new Date()
-      if (JSON.parse(localStorage.getItem('location') === null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
+      if (getLocalStorage('location') === null || now.getTime() > getLocalStorage('location').expiryTime) {
         try {
           await navigator.geolocation.getCurrentPosition((pos) => {
             if (pos.coords.latitude && pos.coords.longitude) {
-              setLatitude(pos.coords.latitude)
-              setLongitude(pos.coords.longitude)
+              setLocation({
+                longitude: pos.coords.longitude,
+                latitude: pos.coords.latitude
+              })
             }
           }, (error) => {
             switch (error.code) {
-              case 1: {
+              case ERROR_CODE_1: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Please allow to access your location' })
                 break
               }
-              case 2: {
+              case ERROR_CODE_2: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Unable to find your location' })
                 break
               }
-              case 3: {
+              case ERROR_CODE_3: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Timeout!' })
                 break
               }
               default:
                 httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
             }
-          }, navigatorTimeout)
+          }, navigatorOptions)
         } catch (error) {
           httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
         }
@@ -55,12 +58,11 @@ function Home () {
     const source = axios.CancelToken.source()
     async function shopsListGetRequest () {
       httpDispatch({ type: 'SEND' })
-      const loc = JSON.parse(localStorage.getItem('location'))
-      if (loc) {
+      if (getLocalStorage('location')) {
         try {
-          const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: loc.longitude, latitude: loc.latitude }, cancelToken: source.token })
+          const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: getLocalStorage('location').longitude, latitude: getLocalStorage('location').latitude }, cancelToken: source.token })
           if (!unmounted) {
-            if (resp.status === 200) {
+            if (resp.status === HTTP_200) {
               httpDispatch({
                 type: 'RESPONSE',
                 shopData: resp.data
@@ -70,11 +72,11 @@ function Home () {
         } catch (error) {
           if (!unmounted) {
             switch (error.response?.status) {
-              case 404: {
+              case HTTP_404: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
                 break
               }
-              case 422: {
+              case HTTP_422: {
                 httpDispatch({
                   type: 'ERROR',
                   errorMessage: 'Something went wrong'
@@ -89,33 +91,32 @@ function Home () {
       }
     }
 
-    function setLocalStorage () {
-      if (latitude && longitude) {
+    function storeLocation () {
+      if (location && location.latitude && location.longitude) {
         const now = new Date()
-        const location = {
-          longitude,
-          latitude,
-          expiryTime: now.getTime() + localStorageExpiryMin
+        const loc = {
+          longitude: location.longitude,
+          latitude: location.latitude,
+          expiryTime: now.getTime() + localStorageExpiryTime
         }
-        const localStorageLoc = JSON.parse(localStorage.getItem('location'))
-        if (localStorageLoc === null) {
-          localStorage.setItem('location', JSON.stringify(location))
-        } else if (now.getTime() > localStorageLoc.expiryTime) {
-          localStorage.removeItem('location')
-          localStorage.setItem('location', JSON.stringify(location))
+        if (getLocalStorage('location') === null) {
+          setLocalStorage('location', loc)
+        } else if (now.getTime() > getLocalStorage('location').expiryTime) {
+          removeLocalStorage('location')
+          setLocalStorage('location', loc)
         }
       }
     }
 
     position()
-    setLocalStorage()
+    storeLocation()
     shopsListGetRequest()
 
     return () => {
       unmounted = true
       source.cancel('Cancelling in cleanup')
     }
-  }, [latitude, longitude])
+  }, [location])
 
   return (
     <div className='bg-gray-100 '>
