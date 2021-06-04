@@ -19,9 +19,9 @@ function Home () {
 
   useEffect(() => {
     async function position () {
-      try {
-        const now = new Date()
-        if (JSON.parse(localStorage.getItem('location') === null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
+      const now = new Date()
+      if (JSON.parse(localStorage.getItem('location') === null) || now.getTime() > JSON.parse(localStorage.getItem('location')).expiryTime) {
+        try {
           await navigator.geolocation.getCurrentPosition((pos) => {
             if (pos.coords.latitude && pos.coords.longitude) {
               setLatitude(pos.coords.latitude)
@@ -45,16 +45,16 @@ function Home () {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
             }
           }, navigatorTimeout)
+        } catch (error) {
+          httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
         }
-      } catch (error) {
-        httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
       }
     }
+
     let unmounted = false
     const source = axios.CancelToken.source()
     async function shopsListGetRequest () {
       httpDispatch({ type: 'SEND' })
-
       const loc = JSON.parse(localStorage.getItem('location'))
       if (loc) {
         try {
@@ -88,6 +88,7 @@ function Home () {
         }
       }
     }
+
     function setLocalStorage () {
       if (latitude && longitude) {
         const now = new Date()
@@ -105,6 +106,7 @@ function Home () {
         }
       }
     }
+
     position()
     setLocalStorage()
     shopsListGetRequest()
@@ -131,7 +133,6 @@ function Home () {
                                                 />)))
               : null)
           : loadingShops.map((id) => <Shop key={id} loading={httpState.loading} />)}
-
       </div>
       {httpState.error ? (<ErrorModal message={httpState.error} />) : null}
       <BottomNav />
