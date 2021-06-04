@@ -30,7 +30,7 @@ function Home () {
           }, (error) => {
             switch (error.code) {
               case 1: {
-                httpDispatch({ type: 'ERROR', errorMessage: 'Please allow access to access your location' })
+                httpDispatch({ type: 'ERROR', errorMessage: 'Please allow to access your location' })
                 break
               }
               case 2: {
