@@ -1,12 +1,12 @@
 
-export function getLocalStorage (key) {
+export function getFromLocalStorage (key) {
   return JSON.parse(localStorage.getItem(key))
 }
 
-export function setLocalStorage (key, value) {
+export function setToLocalStorage (key, value) {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
-export function removeLocalStorage (key) {
+export function removeFromLocalStorage (key) {
   localStorage.removeItem(key)
 }

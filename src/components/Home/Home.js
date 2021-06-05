@@ -7,21 +7,21 @@ import Shop from './Shop'
 import React, { useEffect, useReducer, useState } from 'react'
 import reducer, { initialState } from './reducer'
 import { localStorageExpiryTime, navigatorOptions } from '../../settings/config'
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from '../../utils/storage'
-import { HTTP_200, HTTP_404, HTTP_422 } from '../../const/httpStatus'
-import { ERROR_CODE_1, ERROR_CODE_2, ERROR_CODE_3 } from '../../const/navigatorErrorCode'
+import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from '../../utils/storage'
+import { HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_422_UNPROCESSABLE_ENTITY } from '../../const/httpStatus'
+import { NAVIGATOR_PERMISSION_DENIED_ERROR, NAVIGATOR_POSITION_UNAVAILABLE_ERROR, NAVIGATOR_TIMEOUT_ERROR } from '../../const/navigatorErrorCode'
 
 const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
 
 function Home () {
   const [httpState, httpDispatch] = useReducer(reducer, initialState)
 
-  const [location, setLocation] = useState(null)
+  const [location, setLocation] = useState({ longitude: null, latitude: null })
 
   useEffect(() => {
     async function position () {
       const now = new Date()
-      if (getLocalStorage('location') === null || now.getTime() > getLocalStorage('location').expiryTime) {
+      if (getFromLocalStorage('location') === null || now.getTime() > getFromLocalStorage('location').expiryTime) {
         try {
           await navigator.geolocation.getCurrentPosition((pos) => {
             if (pos.coords.latitude && pos.coords.longitude) {
@@ -32,15 +32,15 @@ function Home () {
             }
           }, (error) => {
             switch (error.code) {
-              case ERROR_CODE_1: {
+              case NAVIGATOR_PERMISSION_DENIED_ERROR: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Please allow to access your location' })
                 break
               }
-              case ERROR_CODE_2: {
+              case NAVIGATOR_POSITION_UNAVAILABLE_ERROR: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Unable to find your location' })
                 break
               }
-              case ERROR_CODE_3: {
+              case NAVIGATOR_TIMEOUT_ERROR: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Timeout!' })
                 break
               }
@@ -58,11 +58,11 @@ function Home () {
     const source = axios.CancelToken.source()
     async function shopsListGetRequest () {
       httpDispatch({ type: 'SEND' })
-      if (getLocalStorage('location')) {
+      if (getFromLocalStorage('location')) {
         try {
-          const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: getLocalStorage('location').longitude, latitude: getLocalStorage('location').latitude }, cancelToken: source.token })
+          const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: getFromLocalStorage('location').longitude, latitude: getFromLocalStorage('location').latitude }, cancelToken: source.token })
           if (!unmounted) {
-            if (resp.status === HTTP_200) {
+            if (resp.status === HTTP_200_OK) {
               httpDispatch({
                 type: 'RESPONSE',
                 shopData: resp.data
@@ -72,11 +72,11 @@ function Home () {
         } catch (error) {
           if (!unmounted) {
             switch (error.response?.status) {
-              case HTTP_404: {
+              case HTTP_404_NOT_FOUND: {
                 httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
                 break
               }
-              case HTTP_422: {
+              case HTTP_422_UNPROCESSABLE_ENTITY: {
                 httpDispatch({
                   type: 'ERROR',
                   errorMessage: 'Something went wrong'
@@ -99,11 +99,11 @@ function Home () {
           latitude: location.latitude,
           expiryTime: now.getTime() + localStorageExpiryTime
         }
-        if (getLocalStorage('location') === null) {
-          setLocalStorage('location', loc)
-        } else if (now.getTime() > getLocalStorage('location').expiryTime) {
-          removeLocalStorage('location')
-          setLocalStorage('location', loc)
+        if (getFromLocalStorage('location') === null) {
+          setToLocalStorage('location', loc)
+        } else if (now.getTime() > getFromLocalStorage('location').expiryTime) {
+          removeFromLocalStorage('location')
+          setToLocalStorage('location', loc)
         }
       }
     }
