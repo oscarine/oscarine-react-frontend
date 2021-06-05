@@ -1,67 +1,122 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import axios from 'axios'
+import axiosInstance from '../../axios'
 import BottomNav from '../Layouts/BottomNav'
+import ErrorModal from '../../UI/ErrorModal'
 import Header from '../Layouts/Header'
 import Shop from './Shop'
-import axios from '../../axios'
+import React, { useEffect, useReducer, useState } from 'react'
 import reducer, { initialState } from './reducer'
-import ErrorModal from '../../UI/ErrorModal'
+import { localStorageExpiryTime, navigatorOptions } from '../../settings/config'
+import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from '../../utils/storage'
+import { HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_422_UNPROCESSABLE_ENTITY } from '../../const/httpStatus'
+import { NAVIGATOR_PERMISSION_DENIED_ERROR, NAVIGATOR_POSITION_UNAVAILABLE_ERROR, NAVIGATOR_TIMEOUT_ERROR } from '../../const/navigatorErrorCode'
 
 const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
 
 function Home () {
   const [httpState, httpDispatch] = useReducer(reducer, initialState)
 
-  const [latitude, setLatitude] = useState(null)
-  const [longitude, setLongitude] = useState(null)
+  const [location, setLocation] = useState({ longitude: null, latitude: null })
 
   useEffect(() => {
     async function position () {
-      try {
-        await navigator.geolocation.getCurrentPosition(function (position) {
-          setLatitude(position.coords.latitude)
-          setLongitude(position.coords.longitude)
-        })
-      } catch (error) {
-        httpDispatch({
-          type: 'ERROR',
-          errorMessage: error.message
-        })
+      const now = new Date()
+      if (getFromLocalStorage('location') === null || now.getTime() > getFromLocalStorage('location').expiryTime) {
+        try {
+          await navigator.geolocation.getCurrentPosition((pos) => {
+            if (pos.coords.latitude && pos.coords.longitude) {
+              setLocation({
+                longitude: pos.coords.longitude,
+                latitude: pos.coords.latitude
+              })
+            }
+          }, (error) => {
+            switch (error.code) {
+              case NAVIGATOR_PERMISSION_DENIED_ERROR: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Please allow to access your location' })
+                break
+              }
+              case NAVIGATOR_POSITION_UNAVAILABLE_ERROR: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Unable to find your location' })
+                break
+              }
+              case NAVIGATOR_TIMEOUT_ERROR: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Timeout!' })
+                break
+              }
+              default:
+                httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
+            }
+          }, navigatorOptions)
+        } catch (error) {
+          httpDispatch({ type: 'ERROR', errorMessage: 'Something went wrong' })
+        }
       }
     }
 
+    let unmounted = false
+    const source = axios.CancelToken.source()
     async function shopsListGetRequest () {
       httpDispatch({ type: 'SEND' })
-      try {
-        const resp = await axios.get('/api/v1/shops-list', { params: { longitude: longitude, latitude: latitude } })
-        if (resp.status === 200) {
-          httpDispatch({
-            type: 'RESPONSE',
-            shopData: resp.data
-          })
-        }
-      } catch (error) {
-        switch (error.response?.status) {
-          case 404: {
-            httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
-            break
+      if (getFromLocalStorage('location')) {
+        try {
+          const resp = await axiosInstance.get('/api/v1/shops-list', { params: { longitude: getFromLocalStorage('location').longitude, latitude: getFromLocalStorage('location').latitude }, cancelToken: source.token })
+          if (!unmounted) {
+            if (resp.status === HTTP_200_OK) {
+              httpDispatch({
+                type: 'RESPONSE',
+                shopData: resp.data
+              })
+            }
           }
-          case 422: {
-            httpDispatch({
-              type: 'ERROR',
-              errorMessage: 'Something went wrong'
-            })
-            break
+        } catch (error) {
+          if (!unmounted) {
+            switch (error.response?.status) {
+              case HTTP_404_NOT_FOUND: {
+                httpDispatch({ type: 'ERROR', errorMessage: 'Sorry! There are no registered shops near you' })
+                break
+              }
+              case HTTP_422_UNPROCESSABLE_ENTITY: {
+                httpDispatch({
+                  type: 'ERROR',
+                  errorMessage: 'Something went wrong'
+                })
+                break
+              }
+              default:
+                httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
+            }
           }
-          default:
-            httpDispatch({ type: 'ERROR', errorMessage: 'Oops! Cannot connect to our servers' })
         }
       }
     }
-    position()
-    if (longitude && latitude) {
-      shopsListGetRequest()
+
+    function storeLocation () {
+      if (location && location.latitude && location.longitude) {
+        const now = new Date()
+        const loc = {
+          longitude: location.longitude,
+          latitude: location.latitude,
+          expiryTime: now.getTime() + localStorageExpiryTime
+        }
+        if (getFromLocalStorage('location') === null) {
+          setToLocalStorage('location', loc)
+        } else if (now.getTime() > getFromLocalStorage('location').expiryTime) {
+          removeFromLocalStorage('location')
+          setToLocalStorage('location', loc)
+        }
+      }
     }
-  }, [latitude, longitude])
+
+    position()
+    storeLocation()
+    shopsListGetRequest()
+
+    return () => {
+      unmounted = true
+      source.cancel('Cancelling in cleanup')
+    }
+  }, [location])
 
   return (
     <div className='bg-gray-100 '>
@@ -79,7 +134,6 @@ function Home () {
                                                 />)))
               : null)
           : loadingShops.map((id) => <Shop key={id} loading={httpState.loading} />)}
-
       </div>
       {httpState.error ? (<ErrorModal message={httpState.error} />) : null}
       <BottomNav />
