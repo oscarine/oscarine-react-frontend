@@ -38,7 +38,7 @@ function ShopView () {
     async function getItemList () {
       httpDispatch({ type: 'SEND' })
       try {
-        const resp = await axiosInstance.get('/api/v1/items-list/' + id)
+        const resp = await axiosInstance.get(`/api/v1/items-list/${id}`)
         if (!unmounted) {
           if (resp.status === HTTP_200_OK) {
             httpDispatch({

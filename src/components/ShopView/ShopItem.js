@@ -1,5 +1,6 @@
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import React from 'react'
+import PropTypes from 'prop-types'
 
 function ShopItem ({ cost, inCart, loading, name }) {
   return (
@@ -7,7 +8,7 @@ function ShopItem ({ cost, inCart, loading, name }) {
       <div className='flex flex-col ml-1 md:ml-0  place-items-left'>
         <h1 className={`${!loading && 'md:mt-3 font-semibold text-black-500 text-md md:text-lg'} ${loading && 'md:mt-3 h-6 w-36 md:w-64 bg-gray-200 animate-pulse rounded-sm'} ${!inCart && 'text-lg'} `}>{loading ? null : name}</h1>
         <p className={`${!loading && 'text-gray-500 text-sm -mt-1'} ${loading && 'mt-1 h-4 w-24 md:w-40 bg-gray-200 animate-pulse rounded-sm'}`}>{loading ? null : 'Description'}</p>
-        <p className={`${!loading && 'text-gray-600 text-md'} ${loading && 'mt-2 h-6 w-16 md:w-20 bg-gray-200 animate-pulse rounded-sm'} ${inCart && 'hidden'}`}>{loading ? null : '₹' + cost}</p>
+        <p className={`${!loading && 'text-gray-600 text-md'} ${loading && 'mt-2 h-6 w-16 md:w-20 bg-gray-200 animate-pulse rounded-sm'} ${inCart && 'hidden'}`}>{loading ? null : `₹ ${cost}`}</p>
       </div>
       <div className={`${!inCart && 'flex flex-col relative'} ${inCart && 'flex flex-row'}`}>
         <div className={`w-36 md:w-52 h-24  md:h-32 rounded-lg bg-gray-200 animate-pulse rounded-sm ${!loading && 'hidden'}`} />
@@ -22,6 +23,13 @@ function ShopItem ({ cost, inCart, loading, name }) {
 
     </div>
   )
+}
+
+ShopItem.propTypes = {
+  cost: PropTypes.number,
+  inCart: PropTypes.bool,
+  loading: PropTypes.bool,
+  name: PropTypes.string
 }
 
 export default ShopItem
