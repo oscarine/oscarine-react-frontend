@@ -33,9 +33,9 @@ ShopItem.propTypes = {
 }
 
 ShopItem.defaultProps = {
-  name: '',
+  cost: null,
   inCart: false,
-  cost: null
+  name: ''
 }
 
 export default ShopItem
