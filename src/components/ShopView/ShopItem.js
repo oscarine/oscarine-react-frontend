@@ -28,8 +28,14 @@ function ShopItem ({ cost, inCart, loading, name }) {
 ShopItem.propTypes = {
   cost: PropTypes.number,
   inCart: PropTypes.bool,
-  loading: PropTypes.bool,
+  loading: PropTypes.bool.isRequired,
   name: PropTypes.string
+}
+
+ShopItem.defaultProps = {
+  name: '',
+  inCart: false,
+  cost: null
 }
 
 export default ShopItem

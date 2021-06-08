@@ -38,6 +38,7 @@ Shop.propTypes = {
 
 Shop.defaultProps = {
   address: '',
+  id: null,
   name: ''
 }
 

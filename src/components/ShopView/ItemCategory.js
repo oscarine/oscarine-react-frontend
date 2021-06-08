@@ -15,8 +15,12 @@ function ItemCategory ({ items, loading, name }) {
 
 ItemCategory.propTypes = {
   items: PropTypes.array.isRequired,
-  loading: PropTypes.bool,
+  loading: PropTypes.bool.isRequired,
   name: PropTypes.string
+}
+
+ItemCategory.defaultProps = {
+  name: ''
 }
 
 export default ItemCategory

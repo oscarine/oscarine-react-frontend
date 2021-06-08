@@ -108,6 +108,7 @@ function ShopView () {
             ? categoryArray.map((category) => <ItemCategory
                 items={httpState.items.filter((item) => item.category === category)}
                 key={category}
+                loading={httpState.loading}
                 name={category}
                                               />)
             : null)
