@@ -33,7 +33,7 @@ function ShopView () {
 
   const [{ data: shopData, loading: shopLoading, error: shopError }] = useAxios(`/api/v1/shop-details?shop_id=${id}`)
 
-  const [{ data: itemsList, loading: itemLoading, error: itemError }] = useAxios(`/api/v1/items-list/${1}`)
+  const [{ data: itemsList, loading: itemLoading, error: itemError }] = useAxios(`/api/v1/items-list/${id}`)
 
   let categoryArray = []
   if (itemsList) {
