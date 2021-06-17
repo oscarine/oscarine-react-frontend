@@ -16,7 +16,11 @@ function ShopSearch ({ loading }) {
 }
 
 ShopSearch.propTypes = {
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool
+}
+
+ShopSearch.defaultProps = {
+  loading: false
 }
 
 export default ShopSearch

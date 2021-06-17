@@ -68,21 +68,21 @@ function ShopView () {
       <ShopHeader shopName={shopData?.name} show={show} />
       {!shopError
         ? (
-          <div className='bg-white pt-16 md:pt-28 pl-4 pr-4 mob:shadow-lg'>
-            <h1 className={`${!shopLoading && 'font-medium text-black-500 text-xl w-max ml-auto mr-auto'} ${shopLoading && ' ml-auto mr-auto  h-8 w-48 md:w-64 bg-gray-200 animate-pulse rounded-sm'}`}>{!shopLoading && shopError === null ? shopData.name : null}</h1>
-            <p className={`${!shopLoading && 'text-gray-500 text-md md:mt-1 mb-5 w-max  ml-auto mr-auto'} ${shopLoading && ' ml-auto mr-auto mt-1 md:mt-3 mb-5 h-5 w-32 md:w-48 bg-gray-200 animate-pulse rounded-sm'}`}>{!shopLoading && shopError === null ? shopData.address : null}</p>
+          <div className='bg-white pt-16 md:pt-28 pl-4 pr-4 pb-4 mob:shadow-lg'>
+            <h1 className={`${!shopLoading && 'font-medium text-black-500 text-xl w-max ml-auto mr-auto'} ${shopLoading && ' ml-auto mr-auto  h-8 w-48 md:w-64 bg-gray-200 animate-pulse rounded-sm'}`} data-testid='shop-name'>{!shopLoading && shopError === null ? shopData.name : null}</h1>
+            <p className={`${!shopLoading && 'text-gray-500 text-md md:mt-1 mb-5 w-max  ml-auto mr-auto'} ${shopLoading && ' ml-auto mr-auto mt-1 md:mt-3 mb-5 h-5 w-32 md:w-48 bg-gray-200 animate-pulse rounded-sm'}`} data-testid='shop-address'>{!shopLoading && shopError === null ? shopData.address : null}</p>
             <hr className='max-w-3xl m-auto border-dashed md:border-b-2 md:border-t-0' />
             <div className='max-w-3xl m-auto flex flex-row justify-between p-5 mob:pl-1 mob:pr-1'>
-              <div className='flex flex-col '>
+              <div className='flex flex-col text-left' data-testid='shop-rating'>
                 <div className={`${!shopLoading && 'flex items-center'} ${shopLoading && ' h-5 w-12 bg-gray-200 animate-pulse rounded-sm'}`}>
                   <StarIcon className={`h-4 w-4 pt-0.5 text-gray-600 ${shopLoading && 'hidden'}`} />
                   <p className={`text-gray-600 font-medium text-md ${shopLoading && 'hidden'}`}>3.6</p>
                 </div>
                 <p className={`${!shopLoading && 'text-gray-500 text-xs'} ${shopLoading && 'mt-1 h-4 w-20 bg-gray-200 animate-pulse rounded-sm'}`}>{!shopLoading ? '20+ Ratings' : null}</p>
               </div>
-              <div className='flex flex-col'>
-                <h3 className={`${!shopLoading && shopData.is_available && 'text-green-500'} ${!shopLoading && !shopData.is_available && 'text-red-500'} font-medium text-md ${shopLoading && 'h-5 w-12 bg-gray-200 animate-pulse rounded-sm'}`}>{!shopLoading ? (shopData.is_available ? 'Open' : 'Close') : null}</h3>
-                <p className={`text-gray-500 text-xs ${shopLoading && 'mt-1 h-4 w-20 bg-gray-200 animate-pulse rounded-sm'}`}>{!shopLoading && shopData.is_available ? (shopData.deliverable ? 'For delivery' : 'For take away') : null}</p>
+              <div className='flex flex-col text-right'>
+                <h3 className={`${!shopLoading && shopData.is_available && 'text-green-500'} ${!shopLoading && !shopData.is_available && 'text-red-500'} font-medium text-md ${shopLoading && 'h-5 w-12 bg-gray-200 animate-pulse rounded-sm'}`} data-testid='shop-availability'>{!shopLoading ? (shopData.is_available ? 'Open' : 'Close') : null}</h3>
+                <p className={`text-gray-500 text-xs ${shopLoading && 'mt-1 h-4 w-20 bg-gray-200 animate-pulse rounded-sm'}`} data-testid='shop-deliverable'>{!shopLoading && shopData.is_available ? (shopData.deliverable ? 'For delivery' : 'Check deliverable status') : null}</p>
               </div>
             </div>
           </div>)

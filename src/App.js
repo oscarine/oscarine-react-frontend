@@ -26,7 +26,7 @@ function App () {
       <Route path='/cart'>
         <Cart />
       </Route>
-      <Route path='/shop/:id/:name'>
+      <Route path='/shops/:id'>
         <ShopView />
       </Route>
       <Route path='/'>
