@@ -11,7 +11,8 @@ import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from '
 import { HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_422_UNPROCESSABLE_ENTITY } from '../../const/httpStatus'
 import { NAVIGATOR_PERMISSION_DENIED_ERROR, NAVIGATOR_POSITION_UNAVAILABLE_ERROR, NAVIGATOR_TIMEOUT_ERROR } from '../../const/navigatorErrorCode'
 
-const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
+let loadingKey = 0
+const loadingShops = Array.from(Array(8)).map(() => (loadingKey++))
 
 function Home () {
   const [httpState, httpDispatch] = useReducer(reducer, initialState)
@@ -121,7 +122,7 @@ function Home () {
   return (
     <div className='bg-gray-100 '>
       <Header />
-      <div className='bg-gray-100 z-0 mt-16 pb-16  max-w-6xl m-auto p-2 md:p-6 grid gap-3 grid-cols-1 md:grid-cols-auto  place-items-center'>
+      <div className={`bg-gray-100 mt-16 pb-16  max-w-6xl m-auto p-2 md:p-6 grid gap-3 grid-cols-1 md:grid-cols-auto  place-items-center ${httpState.error && 'hidden'}`}>
         {!httpState.loading
           ? (!httpState.error
               ? (httpState.shops.map((shop) => (<Shop
@@ -133,7 +134,7 @@ function Home () {
                   phone_number={shop.phone_number}
                                                 />)))
               : null)
-          : loadingShops.map((id) => <Shop key={id} loading={httpState.loading} />)}
+          : loadingShops.map((key) => <Shop key={key} loading={httpState.loading} />)}
       </div>
       {httpState.error ? (<ErrorModal message={httpState.error} />) : null}
       <BottomNav />

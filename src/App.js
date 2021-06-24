@@ -20,14 +20,14 @@ function App () {
       <Route path='/search'>
         <Search />
       </Route>
-      <Route path='/shop-view'>
-        <ShopView />
-      </Route>
       <Route path='/shop-search'>
         {shopSearch}
       </Route>
       <Route path='/cart'>
         <Cart />
+      </Route>
+      <Route path='/shops/:id'>
+        <ShopView />
       </Route>
       <Route path='/'>
         <Home />
