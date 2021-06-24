@@ -1,7 +1,7 @@
 import { render, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import ShopView from '../ShopView'
 import { Route, MemoryRouter } from 'react-router-dom'
+import ShopView from '../ShopView'
 
 afterEach(cleanup)
 

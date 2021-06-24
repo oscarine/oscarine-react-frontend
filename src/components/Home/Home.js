@@ -11,7 +11,8 @@ import { getFromLocalStorage, setToLocalStorage, removeFromLocalStorage } from '
 import { HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_422_UNPROCESSABLE_ENTITY } from '../../const/httpStatus'
 import { NAVIGATOR_PERMISSION_DENIED_ERROR, NAVIGATOR_POSITION_UNAVAILABLE_ERROR, NAVIGATOR_TIMEOUT_ERROR } from '../../const/navigatorErrorCode'
 
-const loadingShops = Array.from(Array(8)).map(() => Math.floor(Math.random() * 1000))
+let loadingKey = 0
+const loadingShops = Array.from(Array(8)).map(() => (loadingKey++))
 
 function Home () {
   const [httpState, httpDispatch] = useReducer(reducer, initialState)
@@ -133,7 +134,7 @@ function Home () {
                   phone_number={shop.phone_number}
                                                 />)))
               : null)
-          : loadingShops.map((id) => <Shop key={id} loading={httpState.loading} />)}
+          : loadingShops.map((key) => <Shop key={key} loading={httpState.loading} />)}
       </div>
       {httpState.error ? (<ErrorModal message={httpState.error} />) : null}
       <BottomNav />

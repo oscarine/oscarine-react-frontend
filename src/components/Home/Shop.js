@@ -31,14 +31,14 @@ function Shop ({ address, id, loading, name }) {
 
 Shop.propTypes = {
   address: PropTypes.string,
-  id: PropTypes.number,
+  id: PropTypes.string,
   loading: PropTypes.bool.isRequired,
   name: PropTypes.string
 }
 
 Shop.defaultProps = {
   address: '',
-  id: null,
+  id: '',
   name: ''
 }
 

@@ -10,7 +10,8 @@ import { useParams } from 'react-router'
 import { HTTP_404_NOT_FOUND, HTTP_422_UNPROCESSABLE_ENTITY } from '../../const/httpStatus'
 import ErrorModal from '../../UI/ErrorModal'
 
-const loadingItems = Array.from(Array(5)).map(() => Math.floor(Math.random() * 1000))
+let loadingItemsKey = 0
+const loadingItems = Array.from(Array(5)).map(() => ({ key: loadingItemsKey++ }))
 
 function ShopView () {
   const [show, handleShow] = useState(false)
