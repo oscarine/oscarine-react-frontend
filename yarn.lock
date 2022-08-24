@@ -1298,10 +1298,10 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@heroicons/react@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-1.0.2.tgz#e44a25d139e6fc8f94f4b146aeebad8f9af3d7dc"
-  integrity sha512-4FqozK7QCwyYTTWgtmG+Sffo20arFzIXuzY6TnsShNIPBRn6FKK/CuaYorVkNogxk7FW8MdOvSnpMPQpNeA04g==
+"@heroicons/react@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-2.0.2.tgz#814985c245ce52ce4980eb559fa3deaea8ab8d16"
+  integrity sha512-QhjjFcgq4Xsa1X+k/OBl/Mt6ean5XlDA/Lg5hS852+Cc8rOyBsSoTZt+BXhM7kKUpL90S3Jm9lzRfeG1WxQACw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
